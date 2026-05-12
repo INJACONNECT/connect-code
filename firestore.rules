@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /waiting_pool/{docId} {
+      allow read, write: if true; // In a real production app, we'd use Auth, but for this anonymous app, we keep it open but could add rate limiting or validation.
+    }
+    match /sessions/{docId} {
+      allow read, write: if true; // Should ideally check if request.auth.uid is in users array
+    }
+    match /users/{docId} {
+      allow read, write: if true;
+    }
+    match /system/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}
